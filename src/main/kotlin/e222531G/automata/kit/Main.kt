@@ -22,7 +22,9 @@ fun main() {
         }
     """
 
-    val automate = Json.decodeFromString<AutomataData>(json)
+    val filePath = "automatas/function.json"
+    val fileContent = object {}.javaClass.classLoader.getResource(filePath)?.readText() ?: return
+    val automate = Json.decodeFromString<AutomataData>(fileContent)
     val test = Automata.createAutomata(automate)
-    println(test.accepts(":)"))
+    println(test.accepts("function print(x: Int, y: Int): String"))
 }

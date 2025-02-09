@@ -8,15 +8,18 @@ class AcceptorB : AbstractAcceptor() {
         states: Map<String, State>,
         finalStates: List<State>
     ): Boolean {
+        var expr : String = expression
         var currentState = initialState
-        while ( currentState !in finalStates ){
-            val transition = currentState.transitions.find { expression.startsWith(it.symbol) }
+        val listTransitions = mutableListOf<String>()
+        while ( currentState !in finalStates && expr != "" ){
+            val transition = currentState.transitions.find { expr.startsWith(it.symbol) }
             if ( transition == null ){
                 return false
             }
-            expression.removePrefix(transition.symbol)
+            listTransitions.add(transition.symbol)
+            expr = expr.removePrefix(transition.symbol)
             currentState = transition.to
         }
-        return false
+        return true
     }
 }
