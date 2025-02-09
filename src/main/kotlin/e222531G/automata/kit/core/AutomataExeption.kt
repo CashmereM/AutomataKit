@@ -1,3 +1,3 @@
-package e222531G.automata.kit.models
+package e222531G.automata.kit.core
 
 class AutomataExeption(message: String) : Exception(message)

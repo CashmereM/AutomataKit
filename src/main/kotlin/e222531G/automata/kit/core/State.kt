@@ -1,4 +1,4 @@
-package e222531G.automata.kit.models
+package e222531G.automata.kit.core
 
 class State(
     val name: String,
@@ -11,10 +11,5 @@ class State(
 
     fun findNextState(symbol: String): State? {
         return transitions.find { it.symbol == symbol }?.to
-    }
-
-    fun findNextStateName(symbol: String): String? {
-        val transitionFinded = transitions.find { it.symbol == symbol }
-        return transitionFinded?.to?.name
     }
 }

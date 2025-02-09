@@ -1,7 +1,7 @@
 package e222531G.automata.kit
 
-import e222531G.automata.kit.data.AutomataData
-import e222531G.automata.kit.models.Automata
+import e222531G.automata.kit.models.AutomataData
+import e222531G.automata.kit.core.Automata
 import kotlinx.serialization.json.*
 
 fun main() {

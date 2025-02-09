@@ -1,20 +1,27 @@
-package e222531G.automata.kit.models
+package e222531G.automata.kit.core
 
-import e222531G.automata.kit.data.AutomataData
+import e222531G.automata.kit.models.AutomataData
 
 class Automata private constructor(
     val name: String,
-    private val initialState : State
+    private val initialState : State,
+    private val _alphabet: List<String> = mutableListOf()
 ) {
     var description: String = ""
-    val alphabet: MutableList<String> = mutableListOf()
+    val alphabet : List<String>
+        get() = _alphabet.toList()
     private val states: MutableMap<String, State> = mutableMapOf()
     private val finalStates: MutableList<State> = mutableListOf()
+    private var acceptor : AbstractAcceptor
 
     init {
         states[initialState.name] = initialState
+        acceptor = if ( _alphabet.find { it.length > 1 } != null ){
+            AcceptorB()
+        } else {
+            AcceptorA()
+        }
     }
-
 
     private fun addState( name : String ) {
         if ( this.states.containsKey(name) ){
@@ -31,7 +38,7 @@ class Automata private constructor(
             throw AutomataExeption("This automata doesn't have a state named (currentState) : $currentStateName")
         } else if ( transitionState == null) {
             throw AutomataExeption("This automata doesn't have a state named (transitionState): $transitionStateName")
-        } else if ( !this.alphabet.contains(symbol)) {
+        } else if ( !this._alphabet.contains(symbol)) {
             throw AutomataExeption("This automata doesn't have the symbol in their alphabet: $symbol")
         } else {
             val newTransition = Transition(symbol, transitionState)
@@ -46,62 +53,66 @@ class Automata private constructor(
         this.finalStates.add(finalState)
     }
 
-    fun accepts(expression : String) : Boolean{
-        var currentState : State = this.initialState
-        var index = 0
-        while (index < expression.length){
-
-            val char = expression[index].toString()
-            val nextState = currentState.findNextState(char)
-            if ( nextState == null){
-                return false
-            }else{
-                currentState = nextState
-            }
-            index++
-        }
-        return this.finalStates.contains(currentState) && index == expression.length
+    fun accepts(expression: String): Boolean {
+        val result = acceptor.accepts(
+            expression,
+            initialState,
+            states,
+            finalStates
+        )
+        return result
     }
-
 
     companion object{
         fun createAutomata( base : AutomataData ) : Automata{
             val initialState = State(base.initialState)
-            val newAutomata = Automata(base.name, initialState)
-            newAutomata.alphabet.addAll(base.alphabet)
+            val newAutomata = Automata(base.name, initialState, base.alphabet)
             newAutomata.description = base.description
+            createStates(newAutomata, base)
+            createTransition(newAutomata, base)
+            return newAutomata
+        }
 
+        private fun createStates(automata : Automata, base : AutomataData){
             try{
                 base.states.filter { it.name != base.initialState }.forEach{
-                    newAutomata.addState(it.name)
+                    automata.addState(it.name)
                 }
                 base.finalStates.forEach { name ->
-                    newAutomata.addFinalState(name)
+                    automata.addFinalState(name)
                 }
             }catch ( e : AutomataExeption ) {
                 throw AutomataExeption("""
-                    Phase - creating states - name : ${newAutomata.name}
+                    Phase - creating states - name : ${automata.name}
                         ${e.message}
                     => states list [${base.states.joinToString("; ") { it.name }}]
                 """.trimIndent())
 
             }
+        }
+
+        private fun createTransition(automata: Automata, base: AutomataData){
+            if ( automata.states.isEmpty() ){
+                throw AutomataExeption("""
+                    Phase - creating transitions - name : ${automata.name}
+                        states list empty
+                """.trimIndent())
+            }
             try{
                 base.states.forEach { stateData ->
                     stateData.transitions.forEach {
-                        newAutomata.addTransition(stateData.name, it.symbol, it.to)
+                        automata.addTransition(stateData.name, it.symbol, it.to)
                     }
                 }
             }catch (e : AutomataExeption) {
                 val message = e.message
                 throw AutomataExeption(
                     """
-                        Phase - creating transitions - name : ${newAutomata.name} 
+                        Phase - creating transitions - name : ${automata.name} 
                             $message
                     """.trimIndent()
                 )
             }
-            return newAutomata
         }
     }
 

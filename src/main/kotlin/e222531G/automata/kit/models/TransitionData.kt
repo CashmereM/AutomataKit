@@ -1,4 +1,4 @@
-package e222531G.automata.kit.data
+package e222531G.automata.kit.models
 
 import kotlinx.serialization.Serializable
 
