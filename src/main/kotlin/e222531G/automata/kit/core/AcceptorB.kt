@@ -12,7 +12,7 @@ class AcceptorB : AbstractAcceptor() {
         var currentState = initialState
         val listTransitions = mutableListOf<String>()
         while ( currentState !in finalStates && expr != "" ){
-            val transition = currentState.transitions.find { expr.startsWith(it.symbol) }
+            val transition = currentState.transitions.find { transition -> expr.startsWith(transition.symbol) }
             if ( transition == null ){
                 return false
             }
@@ -23,3 +23,4 @@ class AcceptorB : AbstractAcceptor() {
         return true
     }
 }
+

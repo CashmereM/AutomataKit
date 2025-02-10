@@ -1,0 +1,14 @@
+{
+  "name": "Smiley",
+  "description": "Seuls les expressions suivantes sont valides : :), :-), :(, ;-), :=), ]-)",
+  "alphabet": [":", ";", "-", "=", "(", ")", "]"],
+  "states": [
+    {"name": "e0", "transitions": [{"symbol": ";", "to": "e2"}, {"symbol": "]", "to": "e2"}, {"symbol": ":", "to": "e1"}]},
+    {"name": "e1", "transitions": [{"symbol": "-", "to": "e3"}, {"symbol": "=", "to": "e3"}, {"symbol": ")", "to": "e4"}, {"symbol": "(", "to": "e4"}]},
+    {"name": "e2", "transitions": [{"symbol": "-", "to": "e3"}]},
+    {"name": "e3", "transitions": [{"symbol": ")", "to": "e4"}]},
+    {"name": "e4", "transitions": []}
+  ],
+  "initialState": "e0",
+  "finalStates": ["e4"]
+}
