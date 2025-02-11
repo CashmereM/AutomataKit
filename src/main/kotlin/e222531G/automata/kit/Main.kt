@@ -5,9 +5,9 @@ import e222531G.automata.kit.core.Automata
 import kotlinx.serialization.json.*
 
 fun main() {
-    val filePath = "automatas/smiley.json"
+    val filePath = "automatas/function.json"
     val fileContent = object {}.javaClass.classLoader.getResource(filePath)?.readText() ?: return
     val automate = Json.decodeFromString<AutomataData>(fileContent)
     val test = Automata.createAutomata(automate)
-    println(test.accepts(":-7)"))
+    println(test.accepts("function test(x: Int, y: Int): String"))
 }

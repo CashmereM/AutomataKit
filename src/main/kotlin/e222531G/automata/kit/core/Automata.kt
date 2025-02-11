@@ -1,6 +1,7 @@
 package e222531G.automata.kit.core
 
 import e222531G.automata.kit.models.AutomataData
+import kotlin.math.max
 
 class Automata private constructor(
     val name: String,
@@ -13,11 +14,16 @@ class Automata private constructor(
     private val states: MutableMap<String, State> = mutableMapOf()
     private val finalStates: MutableList<State> = mutableListOf()
     private var acceptor : AbstractAcceptor
+    private val maxCharLength : Int
 
     init {
         states[initialState.name] = initialState
+        if ( _alphabet.isEmpty() ){
+            throw AutomataExeption("This automata can't have an empty alphabet : { name : ${this.name}")
+        }
+        maxCharLength = this._alphabet.maxOf { it.length }
         acceptor = if ( _alphabet.find { it.length > 1 } != null ){
-            AcceptorB()
+            AcceptorC()
         } else {
             AcceptorA()
         }
@@ -41,8 +47,7 @@ class Automata private constructor(
         } else if ( !this._alphabet.contains(symbol)) {
             throw AutomataExeption("This automata doesn't have the symbol in their alphabet: $symbol")
         } else {
-            val newTransition = Transition(symbol, transitionState)
-            currentState.addTransition(newTransition)
+            currentState.addTransition(symbol, transitionState)
         }
     }
 
@@ -58,7 +63,8 @@ class Automata private constructor(
             expression,
             initialState,
             states,
-            finalStates
+            finalStates,
+            maxCharLength
         )
         return result
     }

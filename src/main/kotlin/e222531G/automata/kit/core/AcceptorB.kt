@@ -6,21 +6,36 @@ class AcceptorB : AbstractAcceptor() {
         expression: String,
         initialState: State,
         states: Map<String, State>,
-        finalStates: List<State>
+        finalStates: List<State>,
+        maxCharLength : Int
     ): Boolean {
-        var expr : String = expression
+        var remainingExpression: String = expression
         var currentState = initialState
-        val listTransitions = mutableListOf<String>()
-        while ( currentState !in finalStates && expr != "" ){
-            val transition = currentState.transitions.find { transition -> expr.startsWith(transition.symbol) }
-            if ( transition == null ){
+
+        // Loop until the current state is an accepting state or the expression is consumed
+        while (currentState !in finalStates && remainingExpression.isNotEmpty()) {
+            // Find the first transition whose key matches the start of the remaining expression
+            val transition = currentState.transitions.entries.find { (prefix, _) -> remainingExpression.startsWith(prefix) }
+
+            if (transition == null) {
                 return false
             }
-            listTransitions.add(transition.symbol)
-            expr = expr.removePrefix(transition.symbol)
-            currentState = transition.to
+
+            // Remove the matching prefix from the remaining expression
+            remainingExpression = remainingExpression.removePrefix(transition.key)
+
+
+            // Move to the next state according to the transition
+            currentState = transition.value
+
+            // Ensure the next state is valid in the states map
+            if (currentState !== states[currentState.name]) {
+                throw AutomataExeption("State transition mismatch for '${transition.key}'.")
+            }
         }
-        return true
+
+        // Ensure the automaton ends in an accepting state and the expression is fully consumed
+        return currentState in finalStates && remainingExpression.isEmpty()
     }
 }
 

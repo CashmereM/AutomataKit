@@ -6,7 +6,8 @@ abstract class AbstractAcceptor {
         expression : String,
         initialState : State,
         states : Map<String, State>,
-        finalStates : List<State>
+        finalStates : List<State>,
+        maxCharLength : Int
     ) : Boolean
 
 }

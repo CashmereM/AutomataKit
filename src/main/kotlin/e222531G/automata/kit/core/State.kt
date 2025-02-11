@@ -2,14 +2,14 @@ package e222531G.automata.kit.core
 
 class State(
     val name: String,
-    val transitions: MutableList<Transition> = mutableListOf()
+    val transitions: MutableMap<String, State> = mutableMapOf()
 ) {
 
-    fun addTransition( transtion : Transition ) {
-        transitions.add(transtion)
+    fun addTransition( character : String, to : State ) {
+        transitions[character] = to
     }
 
-    fun findNextState(symbol: String): State? {
-        return transitions.find { it.symbol == symbol }?.to
+    fun findState(character: String): State? {
+        return transitions[character]
     }
 }
