@@ -1,6 +1,6 @@
 package e222531G.automata.kit.core
 
-import e222531G.automata.kit.models.AutomataData
+import e222531G.automata.kit.models.AutomatonData
 
 
 /**
@@ -129,7 +129,7 @@ class Automaton private constructor(
          * @return The newly created automaton.
          * @throws AutomatonException If there is an error creating the automaton (e.g., invalid states or transitions).
          */
-        fun createAutomata( base : AutomataData ) : Automaton{
+        fun createAutomata( base : AutomatonData ) : Automaton{
             val initialState = State(base.initialState)
             val newAutomaton = Automaton(base.name, initialState, base.alphabet)
             newAutomaton.description = base.description
@@ -146,7 +146,7 @@ class Automaton private constructor(
          * @param base The data that defines the transitions.
          * @throws AutomatonException If there is an error creating the transitions.
          */
-        private fun createStates(automaton : Automaton, base : AutomataData){
+        private fun createStates(automaton : Automaton, base : AutomatonData){
             try{
                 base.states.filter { it.name != base.initialState }.forEach{
                     automaton.addState(it.name)
@@ -171,7 +171,7 @@ class Automaton private constructor(
          * @param base The data that defines the transitions.
          * @throws AutomatonException If there is an error creating the transitions.
          */
-        private fun createTransition(automaton: Automaton, base: AutomataData){
+        private fun createTransition(automaton: Automaton, base: AutomatonData){
             if ( automaton.states.isEmpty() ){
                 throw AutomatonException("""
                     Phase - creating transitions - name : ${automaton.name}
