@@ -21,7 +21,7 @@ class AcceptorA : AbstractAcceptor() {
             } else {
                 // Ensure the next state is valid in the states map
                 if (nextState !== states[nextState.name]) {
-                    throw AutomataExeption("State transition mismatch for '$char'.")
+                    throw AutomatonException("State transition mismatch for '$char'.")
                 }
                 currentState = nextState
             }

@@ -37,7 +37,7 @@ class AcceptorC : AbstractAcceptor() {
             remainingExpression = remainingExpression.removePrefix(transitionPrefix)
             // Ensure the next state is valid in the states map
             if (nextState !== states[nextState.name]) {
-                throw AutomataExeption("State transition mismatch for '$transitionPrefix'.")
+                throw AutomatonException("State transition mismatch for '$transitionPrefix'.")
             }
             currentState = nextState
         }

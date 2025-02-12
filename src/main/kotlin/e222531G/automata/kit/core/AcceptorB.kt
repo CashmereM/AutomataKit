@@ -30,7 +30,7 @@ class AcceptorB : AbstractAcceptor() {
 
             // Ensure the next state is valid in the states map
             if (currentState !== states[currentState.name]) {
-                throw AutomataExeption("State transition mismatch for '${transition.key}'.")
+                throw AutomatonException("State transition mismatch for '${transition.key}'.")
             }
         }
 
