@@ -123,19 +123,32 @@ class Automaton private constructor(
 
     companion object{
 
+        private val AUTOMATONS : MutableMap<String, Automaton> = mutableMapOf()
+        private const val LIMIT = 100
+
+        fun getAutomatons() : Map<String, Automaton>{
+            return AUTOMATONS.toMap()
+        }
+
+
         /**
          * Creates a new automaton based on the provided automaton data.
          *
          * @param base The data that defines the automaton (name, initial state, alphabet, etc.).
          * @return The newly created automaton.
          * @throws AutomatonException If there is an error creating the automaton (e.g., invalid states or transitions).
+         * @throws AutomatonException If the maximum of automata created is reached.
          */
         fun createAutomata( base : AutomatonData ) : Automaton{
+            if (AUTOMATONS.size == LIMIT) {
+                throw AutomatonException("Maximum number of automata reached.")
+            }
             val initialState = State(base.initialState)
             val newAutomaton = Automaton(base.name, initialState, base.alphabet)
             newAutomaton.description = base.description
             createStates(newAutomaton, base)
             createTransition(newAutomaton, base)
+            AUTOMATONS[newAutomaton.name] = newAutomaton
             return newAutomaton
         }
 
