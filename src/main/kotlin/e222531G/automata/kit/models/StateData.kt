@@ -5,5 +5,5 @@ import kotlinx.serialization.*
 @Serializable
 data class StateData(
     val name: String,
-    val transitions: List<TransitionData>
+    val transitions: MutableList<TransitionData>
 )

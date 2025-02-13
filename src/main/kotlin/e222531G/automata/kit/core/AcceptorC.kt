@@ -1,5 +1,7 @@
 package e222531G.automata.kit.core
 
+import e222531G.automata.kit.exceptions.AutomatonException
+
 class AcceptorC : AbstractAcceptor() {
 
     override fun accepts(

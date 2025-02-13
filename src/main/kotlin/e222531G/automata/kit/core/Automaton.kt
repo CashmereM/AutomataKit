@@ -1,5 +1,6 @@
 package e222531G.automata.kit.core
 
+import e222531G.automata.kit.exceptions.AutomatonException
 import e222531G.automata.kit.models.AutomatonData
 
 
@@ -25,7 +26,7 @@ import e222531G.automata.kit.models.AutomatonData
 class Automaton private constructor(
     val name: String,
     private val initialState : State,
-    private val _alphabet: List<String> = mutableListOf()
+    private val _alphabet: Set<String> = mutableSetOf()
 ) {
     var description: String = ""
     val alphabet : List<String>
@@ -154,7 +155,7 @@ class Automaton private constructor(
                 base.finalStates.forEach { name ->
                     automaton.addFinalState(name)
                 }
-            }catch ( e : AutomatonException ) {
+            }catch ( e : AutomatonException) {
                 throw AutomatonException("""
                     Phase - creating states - name : ${automaton.name}
                         ${e.message}
