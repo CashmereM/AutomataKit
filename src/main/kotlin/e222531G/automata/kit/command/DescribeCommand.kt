@@ -27,7 +27,7 @@ class DescribeCommand() : ICommand {
             println("--------------- Automaton description Menu -------------------------")
 
             availableAutomatons.forEachIndexed { index, automaton ->
-                println("${index + 1}. ${automaton.name} ")
+                println("${index + 1}. ${automaton.name} ${automaton.format}")
             }
             println("99. Exit the application")
             print("Your choice (1-99) ? ")
@@ -39,7 +39,7 @@ class DescribeCommand() : ICommand {
                     println("Please enter a value.")
                 }
                 99 -> {
-                    println("Arrêt de l'application. Merci !")
+                    println("Stopping application. Thanks !")
                     break
                 }
                 in 1..availableAutomatons.size -> {
@@ -47,6 +47,8 @@ class DescribeCommand() : ICommand {
                     println("You selected: ${selectedAutomaton.name}")
                     println("Description : ")
                     printFormattedText("$CYAN${selectedAutomaton.description}$RESET")
+                    println("Press enter to pass")
+                    readlnOrNull()
                 }
                 else -> {
                     println("Invalid choice, please try again.")

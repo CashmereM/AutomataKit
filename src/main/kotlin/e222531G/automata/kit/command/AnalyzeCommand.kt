@@ -30,7 +30,7 @@ class AnalyzeCommand : ICommand {
             println("--------------- My TP Menu -------------------------")
 
             availableAutomatons.forEachIndexed { index, automaton ->
-                println("${index + 1}. ${automaton.name} ")
+                println("${index + 1}. ${automaton.name} ${automaton.format}")
             }
             println("99. Exit the application")
             print("Your choice (1-99) ? ")
@@ -42,7 +42,7 @@ class AnalyzeCommand : ICommand {
                     println("Please enter a value.")
                 }
                 choice == 99 -> {
-                    println("Arrêt de l'application. Merci !")
+                    println("Stopping application. Thanks !")
                     break
                 }
                 choice in 1..availableAutomatons.size -> {

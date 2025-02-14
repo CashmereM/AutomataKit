@@ -1,5 +1,6 @@
-name: date
-description:
+name: Smiley ( :) , :( , ;) )
+description: ...
+format: :) , :( , ;)
 initial state: e0
 final states: e4
 - e0 : e1

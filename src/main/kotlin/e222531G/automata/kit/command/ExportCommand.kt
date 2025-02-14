@@ -28,7 +28,7 @@ class ExportCommand : ICommand {
             println("--------------- Exports Menu -------------------------")
 
             availableAutomatons.forEachIndexed { index, automaton ->
-                println("${index + 1}. ${automaton.name} ")
+                println("${index + 1}. ${automaton.name} ${automaton.format}")
             }
             println("99. Exit the application")
             print("Your choice (1-99) ? ")
@@ -40,13 +40,13 @@ class ExportCommand : ICommand {
                     println("Please enter a value.")
                 }
                 99 -> {
-                    println("Arrêt de l'application. Merci !")
+                    println("Stopping application. Thanks !")
                     break
                 }
                 in 1..availableAutomatons.size -> {
                     val selectedAutomaton = availableAutomatons[choice - 1]
                     println("You selected: ${selectedAutomaton.name}")
-                    exporter.export(selectedAutomaton.getBase(), "/home/working/")
+                    exporter.export(selectedAutomaton.getBase())
                 }
                 else -> {
                     println("Invalid choice, please try again.")

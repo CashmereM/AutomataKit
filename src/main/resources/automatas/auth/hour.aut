@@ -1,4 +1,5 @@
 name: Hour
+format: HH:MM:SS
 description: The accepted format for the automaton is as follows: HH:MM:SS. Example: 11:59:21 from 00:00:00 to 23:59:59
 initial state: e0
 final states: e9

@@ -1,6 +1,7 @@
 {
   "name": "FunctionValidator",
-  "description": "The FunctionValidator automaton validates function declarations in the format function Name(paramName: Type, ...) : Type. It starts by detecting the \"function\" keyword, followed by the function name, a list of parameters with their types, and ends with a return type. The automaton progresses through several states to analyze each part of the declaration: the function name, parameters and their types, and the return type. If the syntax is correct, it reaches a final validation state.",
+  "description": "The FunctionValidator automaton validates function declarations in the format function Name(paramName: Type, ...) : Type. It starts by detecting the \"function\" keyword, followed by the function name, a list of parameters with their types, and ends with a return type. The automaton progresses through several states to analyze each part of the declaration: the function name, parameters and their types, and the return type. If the syntax is correct, it reaches a final validation state. \nType available : Int, String, Double, Boolean, Char",
+  "format" : "function <functionName>(<nameParameter>: Type, ...) : Type",
   "alphabet": [
     "function", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
     "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",

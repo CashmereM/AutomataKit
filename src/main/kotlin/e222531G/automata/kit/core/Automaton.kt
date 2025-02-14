@@ -27,7 +27,8 @@ class Automaton private constructor(
     val name: String,
     private val initialState : State,
     private val _alphabet: Set<String> = mutableSetOf(),
-    private val base : AutomatonData
+    private val base : AutomatonData,
+    val format : String
 ) {
     var description: String = ""
     val alphabet : List<String>
@@ -149,7 +150,7 @@ class Automaton private constructor(
                 throw AutomatonException("Maximum number of automata reached.")
             }
             val initialState = State(base.initialState)
-            val newAutomaton = Automaton(base.name, initialState, base.alphabet, base)
+            val newAutomaton = Automaton(base.name, initialState, base.alphabet, base, base.format)
             newAutomaton.description = base.description
             createStates(newAutomaton, base)
             createTransition(newAutomaton, base)

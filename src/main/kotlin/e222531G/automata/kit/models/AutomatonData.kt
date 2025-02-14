@@ -7,6 +7,7 @@ import kotlinx.serialization.*
 data class AutomatonData(
     val name: String,
     val description: String,
+    val format : String,
     val alphabet: Set<String>,
     val states: List<StateData>,
     val initialState: String,

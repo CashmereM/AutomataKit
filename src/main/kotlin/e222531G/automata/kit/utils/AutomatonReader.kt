@@ -13,28 +13,29 @@ class AutomatonReader {
 
     private var lastFilePath = ""
 
-    fun readAutomatonFile( filePath: String ) : AutomatonData {
+    fun readAutomatonFile(filePath: String) : AutomatonData {
         lateinit var automatonData: AutomatonData
         when{
             filePath.endsWith(".json") -> {
                 automatonData = readAutomatonJsonFile(filePath)
             }
-            filePath.endsWith(".auth") -> {
-                automatonData = readAutomatonAuthFile(filePath)
+            filePath.endsWith(".aut") -> {
+                automatonData = readAutomatonAutFile(filePath)
             }
             else -> {
-                throw IllegalArgumentException("The file should be a '.json' file or a '.auth', have : $filePath")
+                throw IllegalArgumentException("The file should be a '.json' file or a '.aut', have : $filePath")
             }
         }
         return automatonData
     }
 
-    fun readAutomatonJsonFile( filePath : String ) : AutomatonData {
+    fun readAutomatonJsonFile(filePath : String) : AutomatonData {
         this.lastFilePath = filePath
         if ( !filePath.endsWith(".json")){
             throw IllegalArgumentException("The file should be a '.json' file , have : $filePath")
         }
-        val fileContent = object {}.javaClass.classLoader.getResource(filePath)?.readText() ?: throw FileNotFoundException(" The file '${filePath}'")
+        val fileContent = object {}.javaClass.classLoader.getResource(filePath)?.readText() ?:
+            throw FileNotFoundException(" The file '${filePath}'")
         try{
             val automatonData = Json.decodeFromString<AutomatonData>(fileContent)
             return automatonData
@@ -43,10 +44,10 @@ class AutomatonReader {
         }
     }
 
-    fun readAutomatonAuthFile( filePath : String ) : AutomatonData {
+    fun readAutomatonAutFile(filePath : String ) : AutomatonData {
         this.lastFilePath = filePath
-        if ( !filePath.endsWith(".auth")){
-            throw IllegalArgumentException("The file should have '.auth' extension have : $lastFilePath")
+        if ( !filePath.endsWith(".aut")){
+            throw IllegalArgumentException("The file should have '.aut' extension have : $lastFilePath")
         }
         val inputStream = object {}.javaClass.classLoader.getResourceAsStream(filePath) ?:
             throw FileNotFoundException(" The file '${lastFilePath}' doesn't exists the resources directory")
@@ -77,6 +78,7 @@ class AutomatonReader {
     private fun parseAutomaton( lines: MutableList<String> ) : AutomatonData{
         val name = getFieldValue(lines, "name")[0]
         val description = getFieldValue(lines, "description")[0]
+        val format = getFieldValue(lines, "format")[0]
         val initialState = getFieldValue(lines, "initial state", separatingWords = true)[0]
         val finalStates = getFieldValue(lines, "final states", separatingWords = true)
         val states : MutableMap<String, StateData> = mutableMapOf()
@@ -107,7 +109,8 @@ class AutomatonReader {
             state.transitions.add(TransitionData(character, to))
             alphabet.add(character)
         }
-        return AutomatonData(name = name, description = description, initialState = initialState, finalStates = finalStates, states = states.values.toList(), alphabet = alphabet)
+        return AutomatonData(name = name, description = description, initialState = initialState,
+            finalStates = finalStates, states = states.values.toList(), alphabet = alphabet, format = format)
     }
 
     private fun extractTransitions(lines: MutableList<String>): List<List<String>> {
@@ -123,79 +126,4 @@ class AutomatonReader {
         }
         return transitions
     }
-
-
-
-
-
-    /*
-    private fun parseName( line : String ) : String {
-        val elements = line.split(":").filter { it != "" }
-        if ( elements.size != 2 ){
-            throw AutomatonException("The file doesn't provide a name (required) for the automaton : $lastFilePath")
-        }
-        return elements[1]
-    }
-
-    private fun parseInitialState(line: String): String {
-        val elements = splitLine(line)
-        if (elements.size != 2) {
-            throw AutomatonException("The file doesn't provide an initial state (required) for the automaton.")
-        }
-        val list = splitLine(elements[1], " ")
-        if ( list.isEmpty() ){
-            throw MissingRequiredFieldException("The field 'initial state' doesn't have a value")
-        } else if ( list.size > 1 ){
-            throw InvalidFileFormatException("The field 'initial state' have too much value")
-        }
-        val initialState = list.first()
-        return initialState
-    }
-
-    private fun parseDescription(line: String) : String {
-        val elements = line.split(":").filter { it != "" }.onEach {
-            val result = it.removePrefix(" ")
-            return result
-        }
-        var description = ""
-        if ( elements.size == 2 ){
-            description = elements[1]
-        }
-        return description
-    }
-
-    private fun parseFinalStates(line: String, statesList: MutableMap<String, StateData>, finalStates : MutableList<String>) {
-        val elements = splitLine(line)
-        if ( elements.size != 2 ){
-            throw AutomatonException("The file doesn't provide finals states (required) for the automaton : $lastFilePath") // Change required
-        }
-        finalStates.addAll(elements[1].split(" ").filter { it != "" }.toMutableList())
-        if ( finalStates.isEmpty() ){
-            throw AutomatonException("The file doesn't provide finals states (required) for the automaton : $lastFilePath")
-        }
-        finalStates.forEach { name ->
-            if ( statesList[name] == null){
-                statesList[name] = StateData(name, mutableListOf())
-            }
-        }
-    }
-
-    private fun parseTransition(line: String, statesList: MutableMap<String, StateData>, alphabet: MutableSet<String>) {
-        val elements = splitLine(line).map {
-            it.replace(" ", "")
-        }.filter { it != "" }
-        if (elements.size != 3) {
-            throw InvalidFieldFormat("Invalid transition format : " +
-                    "\n file path : $lastFilePath" +
-                    "\n line : $line" +
-                    "\n     $elements"
-            )
-        }
-        val (currentStateName, character, nextStateName) = elements
-        val currentState = statesList.getOrPut(currentStateName) {
-            StateData(currentStateName, mutableListOf())
-        }
-        currentState.transitions.add(TransitionData(character, nextStateName))
-        alphabet.add(character)
-    } */
 }

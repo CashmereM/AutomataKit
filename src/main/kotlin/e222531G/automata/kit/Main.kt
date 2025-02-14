@@ -10,7 +10,7 @@ fun main() {
     val commandProcessor = CommandProcessor.INSTANCE
     InstantiateAutomatons().instantiate()
 
-    val text = "Please enter a command : "
+    val text = "Please enter a command or use `help` to see commands: "
     commandProcessor.processCommand("clear")
     //println("\u001B[34mType 'help' to see available commands.\u001B[0m")
     // Attendre que l'utilisateur entre une commande
