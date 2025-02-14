@@ -26,9 +26,10 @@ class ExportCommand : ICommand {
         }
         while (true) {
             println("--------------- Exports Menu -------------------------")
-
+            
+            println("Export an automaton into a result.dot file, the output is in the current directory")
             availableAutomatons.forEachIndexed { index, automaton ->
-                println("${index + 1}. ${automaton.name} ${automaton.format}")
+                println("${index + 1}. ${automaton.name} ( ${automaton.format} )")
             }
             println("99. Exit the application")
             print("Your choice (1-99) ? ")

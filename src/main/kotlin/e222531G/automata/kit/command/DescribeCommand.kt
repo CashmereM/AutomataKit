@@ -27,7 +27,7 @@ class DescribeCommand() : ICommand {
             println("--------------- Automaton description Menu -------------------------")
 
             availableAutomatons.forEachIndexed { index, automaton ->
-                println("${index + 1}. ${automaton.name} ${automaton.format}")
+                println("${index + 1}. ${automaton.name} ( ${automaton.format} )")
             }
             println("99. Exit the application")
             print("Your choice (1-99) ? ")

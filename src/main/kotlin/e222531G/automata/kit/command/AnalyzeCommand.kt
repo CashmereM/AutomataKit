@@ -30,7 +30,7 @@ class AnalyzeCommand : ICommand {
             println("--------------- My TP Menu -------------------------")
 
             availableAutomatons.forEachIndexed { index, automaton ->
-                println("${index + 1}. ${automaton.name} ${automaton.format}")
+                println("${index + 1}. ${automaton.name} ( ${automaton.format} )")
             }
             println("99. Exit the application")
             print("Your choice (1-99) ? ")
@@ -50,21 +50,23 @@ class AnalyzeCommand : ICommand {
                     println("You selected: ${selectedAutomaton.name}")
                     var expression: String?
                     do {
-                        println("${YELLOW}Please enter the string to analyze:$RESET")
+                        println("${YELLOW}Please enter the string to analyze or press `Enter` to choose another automaton:$RESET")
                         print("--> ")
                         expression = readlnOrNull()?.trim()
 
                         if (expression.isNullOrEmpty()) {
-                            println("${RED}Invalid input. Please enter a non-empty expression.$RESET")
+                            break
+                        }else{
+                            val result = selectedAutomaton.accepts(expression)
+                            if ( result ){
+                                println("Result : OK")
+                            }else{
+                                println("Result : KO")
+                            }
                         }
-                    } while (expression.isNullOrEmpty())
+                    } while (true)
 
-                    val result = selectedAutomaton.accepts(expression)
-                    if ( result ){
-                        println("Result : OK")
-                    }else{
-                        println("Result : KO")
-                    }
+                    
 
                 }
                 else -> {

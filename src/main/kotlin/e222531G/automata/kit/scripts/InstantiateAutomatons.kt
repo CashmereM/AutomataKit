@@ -8,9 +8,10 @@ class InstantiateAutomatons() {
     private val reader = AutomatonReader()
 
     init {
-        files.add("automatas/auth/smiley.aut")
+        files.add("automatas/aut/smiley.aut")
         files.add("automatas/json/function.json")
-        files.add("automatas/auth/hour.aut")
+        files.add("automatas/aut/hour.aut")
+        files.add("automatas/aut/email.aut")
     }
 
     fun instantiate() {
