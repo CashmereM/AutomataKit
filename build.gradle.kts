@@ -29,6 +29,7 @@ application {
 
 tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    destinationDirectory.set(file("./"))
     manifest {
         attributes["Main-Class"] = "e222531G.automata.kit.MainKt"
     }
