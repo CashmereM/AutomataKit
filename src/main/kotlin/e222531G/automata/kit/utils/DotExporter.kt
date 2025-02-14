@@ -34,6 +34,6 @@ class DotExporter {
             println(text)
         }
         outputFile.writeText(text)
-        println("Fichier 'automaton.dot' créé dans le répertoire : ${outputFile.absolutePath}")
+        println("File 'result.dot' created in the directory : ${outputFile.absolutePath}")
     }
 }
