@@ -2,15 +2,14 @@ package e222531G.automata.kit.command
 
 import e222531G.automata.kit.core.Automaton
 import e222531G.automata.kit.exceptions.AutomatonException
-import e222531G.automata.kit.utils.DotExporter
 
-class ExportCommand : ICommand {
 
-    private val exporter = DotExporter()
-
+class DescribeCommand() : ICommand {
+    private val CYAN = "\u001B[36m"
+    private val RESET = "\u001B[0m"
     override fun parseArgs(args: Array<String>) {
-        if (args.size > 1) {
-            throw IllegalArgumentException("Export command : too much value")
+        if (args.isNotEmpty()) {
+            throw Exception("`analyze` command does not take any arguments.")
         }
     }
 
@@ -25,7 +24,7 @@ class ExportCommand : ICommand {
             throw AutomatonException("No automatons available")
         }
         while (true) {
-            println("--------------- Exports Menu -------------------------")
+            println("--------------- Automaton description Menu -------------------------")
 
             availableAutomatons.forEachIndexed { index, automaton ->
                 println("${index + 1}. ${automaton.name} ")
@@ -46,7 +45,8 @@ class ExportCommand : ICommand {
                 in 1..availableAutomatons.size -> {
                     val selectedAutomaton = availableAutomatons[choice - 1]
                     println("You selected: ${selectedAutomaton.name}")
-                    exporter.export(selectedAutomaton.getBase(), "/home/working/")
+                    println("Description : ")
+                    printFormattedText("$CYAN${selectedAutomaton.description}$RESET")
                 }
                 else -> {
                     println("Invalid choice, please try again.")
@@ -55,4 +55,16 @@ class ExportCommand : ICommand {
             println("-------------------------------------------------------")
         }
     }
+
+    private fun printFormattedText(text: String, maxWidth: Int = 80) {
+        text.split(" ").fold("") { line, word ->
+            if (line.length + word.length + 1 > maxWidth) {
+                println(line)
+                word
+            } else {
+                "$line $word"
+            }
+        }.also { println(it) }
+    }
+
 }

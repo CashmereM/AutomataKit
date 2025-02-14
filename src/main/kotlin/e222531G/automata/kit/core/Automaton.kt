@@ -26,7 +26,8 @@ import e222531G.automata.kit.models.AutomatonData
 class Automaton private constructor(
     val name: String,
     private val initialState : State,
-    private val _alphabet: Set<String> = mutableSetOf()
+    private val _alphabet: Set<String> = mutableSetOf(),
+    private val base : AutomatonData
 ) {
     var description: String = ""
     val alphabet : List<String>
@@ -51,6 +52,10 @@ class Automaton private constructor(
         } else {
             AcceptorA()
         }
+    }
+
+    fun getBase() : AutomatonData{
+        return this.base
     }
 
 
@@ -123,11 +128,11 @@ class Automaton private constructor(
 
     companion object{
 
-        private val AUTOMATONS : MutableMap<String, Automaton> = mutableMapOf()
+        private val AUTOMATONS : MutableList<Automaton> = mutableListOf()
         private const val LIMIT = 100
 
-        fun getAutomatons() : Map<String, Automaton>{
-            return AUTOMATONS.toMap()
+        fun getAutomatons() : List<Automaton>{
+            return AUTOMATONS.toList()
         }
 
 
@@ -144,11 +149,11 @@ class Automaton private constructor(
                 throw AutomatonException("Maximum number of automata reached.")
             }
             val initialState = State(base.initialState)
-            val newAutomaton = Automaton(base.name, initialState, base.alphabet)
+            val newAutomaton = Automaton(base.name, initialState, base.alphabet, base)
             newAutomaton.description = base.description
             createStates(newAutomaton, base)
             createTransition(newAutomaton, base)
-            AUTOMATONS[newAutomaton.name] = newAutomaton
+            AUTOMATONS.add(newAutomaton)
             return newAutomaton
         }
 

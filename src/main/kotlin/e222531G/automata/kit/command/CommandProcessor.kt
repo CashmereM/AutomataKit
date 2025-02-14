@@ -10,6 +10,8 @@ class CommandProcessor private constructor(){
         commands["clear"] = ClearCommand()
         commands["help"] = HelpCommand()
         commands["export"] = ExportCommand()
+        commands["analyze"] = AnalyzeCommand()
+        commands["describe"] = DescribeCommand()
     }
 
     fun processCommand(input: String) {

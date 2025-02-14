@@ -5,6 +5,9 @@ import java.io.BufferedReader
 
 class HelpCommand() : ICommand {
     private val commands: MutableMap<String, String> = mutableMapOf(
+        "analyze" to "- Analyzes a given expression to determine whether it is accepted or rejected by the current automaton.",
+        "describe" to "- Displays a detailed description of the automaton, including its states, transitions, and operational rules.",
+        "export" to "- Exports the current automaton to a .dot file for graphical visualization or further processing.",
         "clear" to " - Clears the terminal screen, removing all previously displayed text.",
         "exit"  to " - Exit the application ( take no arguments ) "
     )

@@ -5,10 +5,10 @@ import java.io.File
 
 class DotExporter {
 
-    fun export(automatonData: AutomatonData, outputDir : String = "./"){
+    fun export(automatonData: AutomatonData, outputDir : String = "./", show : Boolean = false){
         val directory = File(outputDir)
         if (!directory.exists() || !directory.isDirectory || outputDir.isEmpty()) {
-            throw IllegalArgumentException("Le chemin spécifié '$outputDir' n'est pas un répertoire valide.")
+            throw IllegalArgumentException("The specified path '$outputDir' is not a valid directory.")
         }
         val graph = automatonData.states.joinToString("\n") { state ->
             val groupedTransitions = state.transitions.groupBy { it.to }
@@ -28,7 +28,11 @@ class DotExporter {
             $graph
             }
         """.replace("   ", "")
-        val outputFile = File(outputDir, "automaton.dot")
+        val outputFile = File(outputDir, "result.dot")
+        if (show) {
+            println("export to .dot result ")
+            println(text)
+        }
         outputFile.writeText(text)
         println("Fichier 'automaton.dot' créé dans le répertoire : ${outputFile.absolutePath}")
     }

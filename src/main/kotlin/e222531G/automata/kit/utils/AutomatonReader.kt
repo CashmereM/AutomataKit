@@ -13,6 +13,22 @@ class AutomatonReader {
 
     private var lastFilePath = ""
 
+    fun readAutomatonFile( filePath: String ) : AutomatonData {
+        lateinit var automatonData: AutomatonData
+        when{
+            filePath.endsWith(".json") -> {
+                automatonData = readAutomatonJsonFile(filePath)
+            }
+            filePath.endsWith(".auth") -> {
+                automatonData = readAutomatonAuthFile(filePath)
+            }
+            else -> {
+                throw IllegalArgumentException("The file should be a '.json' file or a '.auth', have : $filePath")
+            }
+        }
+        return automatonData
+    }
+
     fun readAutomatonJsonFile( filePath : String ) : AutomatonData {
         this.lastFilePath = filePath
         if ( !filePath.endsWith(".json")){
